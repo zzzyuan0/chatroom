@@ -76,7 +76,7 @@ public class mainLogin {
         private JLabel img ;
         private JPanel jPanel1;
         private JPanel jPanel2 ;
-        private JButton Login ;
+        private JButton Login;
 
         public dawn_Login() {
             this.setLayout(null);
