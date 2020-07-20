@@ -90,7 +90,7 @@ public class Server {
               }
             }
         }
-        private void send(String msg){
+        private synchronized void send(String msg){
             try {
                 dos.writeUTF(msg);
                 dos.flush();
