@@ -1,8 +1,6 @@
 package server;
 
 import file.fileSever;
-import mainFrame.friendPanel;
-
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -18,6 +16,7 @@ public class Server {
     Socket client;
     Channel channel;
     List<Channel>  clients = new ArrayList<Channel>();
+    public static List<String> fileList = new ArrayList<String>();
     public static Map<String, Channel> userClient = new HashMap<String, Channel>();
     public Server() {
         try {
@@ -46,6 +45,7 @@ public class Server {
         boolean isRun = true;
 
         public Channel(Socket client) {
+            new Thread(new reFriend()).start();
             this.client = client;
             try {
                 dos = new DataOutputStream(client.getOutputStream());
@@ -85,7 +85,6 @@ public class Server {
                   }else {
                       userClient.put(str,this);
                   }
-                  friendPanel.setUserClient(str,1);
               }else{
                       c.send(msg);
               }
@@ -107,8 +106,7 @@ public class Server {
                     userClient.entrySet() ) {
                     if (l.getValue() == this){
                         System.out.println(l.getKey() + "退出群聊");
-                           userClient.replace(l.getKey(),null);
-                           friendPanel.setUserClient(l.getKey(),0);
+                        userClient.replace(l.getKey(),null);
                     }
                 }
                 dos.close();
@@ -117,8 +115,38 @@ public class Server {
                 e.printStackTrace();
             }
         }
-
+        class reFriend implements Runnable{
+            @Override
+            public void run() {
+                while (true){
+                    for (Map.Entry<String,Channel> l:
+                            userClient.entrySet() ) {
+                        if (l.getValue() == null) {
+                            for (Channel c :
+                                    clients) {
+                                c.send("-" + l.getKey());
+                            }
+                        }else {
+                            for (Channel c :
+                                    clients) {
+                                c.send("+" + l.getKey());
+                            }
+                        }
+                    }
+                    for (String str:
+                         fileList) {
+                        send("#" + str);
+                    }
+                    try {
+                        Thread.sleep(200);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }
     }
+
     public static void main(String[] args) {
         new Server();
     }

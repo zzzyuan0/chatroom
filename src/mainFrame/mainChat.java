@@ -62,8 +62,7 @@ public class mainChat extends JFrame {
         chatPanel.add(keyChat);
         chatPanel.add(name);
         this.setContentPane(chatPanel);
-        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
+        this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         this.setVisible(true);
 
         send.addActionListener(e -> {
@@ -78,7 +77,8 @@ public class mainChat extends JFrame {
                 xx = e.getX();
                 yy = e.getY();
                 if (xx <= mouse_x && xx >= mouse_x-range_x && yy >=0 && yy <= 30){
-                    dispose();
+//                    dispose();
+                    System.exit(0);
                 }
 //                if (xx <= mouse_x - range_x && xx >= mouse_x - 2*range_x && yy >=0 && yy <= 30){
 //                    if (isMin){

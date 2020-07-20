@@ -1,6 +1,7 @@
 package file;
 
 import mainFrame.filePanel;
+import server.Server;
 
 import java.io.*;
 import java.net.ServerSocket;
@@ -9,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class fileSever implements Runnable {
-    List<String> fileList = new ArrayList<String>();
+
     ServerSocket serverSocket = null;
     DataInputStream dis;
     FileOutputStream fos;
@@ -38,8 +39,7 @@ public class fileSever implements Runnable {
                      file.mkdir();
                      System.out.println("文件创建完毕");
                  }
-                 fileList.add(filePath);
-                 filePanel.setFileList(fileList);
+                 Server.fileList.add(filePath);
                  file = new File(file +"\\"+ filePath);
                  System.out.println(file);
                   if (!file.exists()){

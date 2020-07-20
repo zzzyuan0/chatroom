@@ -9,20 +9,19 @@ import java.util.Map;
 
 public class friendPanel extends JPanel implements Runnable{
     int pos_y = 0;
-    public static Map<String, JButton> map_friend = new HashMap<String, JButton>();
+    public  Map<String, JButton> map_friend = new HashMap<String, JButton>();
     public static  Map<String, Integer> userClient = new HashMap<String, Integer>();
     public synchronized static Map<String, Integer> getUserClient() {
         return userClient;
     }
     public synchronized static void setUserClient(String str,Integer s) {
         if (!userClient.containsKey(str))  userClient.put(str,1);
-        else userClient.replace(str,null);
-        System.out.println(str + "  " + userClient.size());
+        else userClient.replace(str,s);
     }
-
     @Override
     public void run() {
         while (true) {
+            System.out.println(getUserClient().size() + "  -----");
             repaint();
             for (Map.Entry str :
                     getUserClient().entrySet()) {
@@ -48,8 +47,9 @@ public class friendPanel extends JPanel implements Runnable{
         JButton jButton = new JButton(friend);
         jButton.setBounds(10,pos_y,330,30);
         pos_y += 30;
+        jButton.setPreferredSize(new Dimension(330,30));
         jButton.setFont(new Font("楷体", 1, 14));
-        jButton.setForeground(Color.cyan);
+        jButton.setForeground(Color.black);
         map_friend.put(friend,jButton);
         this.add(jButton);
     }

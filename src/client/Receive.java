@@ -1,5 +1,7 @@
 package client;
 
+import mainFrame.filePanel;
+import mainFrame.friendPanel;
 import mainFrame.mainChat;
 
 import java.io.DataInputStream;
@@ -26,13 +28,25 @@ public class Receive implements Runnable{
     public void run() {
       while (true){
           String msg = receive();
+    //      System.out.println(msg + "----------");
           if (!msg.equals("")){
-             String name = msg.substring(0,msg.indexOf("+")) + "\n";
-             String str = msg.substring(msg.indexOf("+")+1);
-             String nameStr = name + str;
-              mainChat.seeChat.append(nameStr);
+              if (msg.startsWith("+")){
+                  msg = msg.substring(1,msg.length());
+                  friendPanel.setUserClient(msg,1);
+              }else if(msg.startsWith("-")){
+                  msg = msg.substring(1,msg.length());
+                  friendPanel.setUserClient(msg,null);
+              }else if (msg.startsWith("#")){
+                  msg = msg.substring(1,msg.length());
+                  filePanel.setFileList(msg);
+              }
+              else {
+                  String name = msg.substring(0,msg.indexOf("+")) + "\n";
+                  String str = msg.substring(msg.indexOf("+")+1) + "\n";
+                  String nameStr = name + str;
+                  mainChat.seeChat.append(nameStr);
+              }
 //              mainChat.seeChat.append(  str);
-
           }
       }
     }

@@ -24,7 +24,7 @@ public class mainLogin2 {
         main_login.add(dawn_login);
 
         main_login.setUndecorated(true);
-        //     main_login.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        main_login.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         main_login.setVisible(true);
 
     }
