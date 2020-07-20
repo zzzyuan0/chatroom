@@ -1,20 +1,34 @@
 package mainFrame;
+
+
 import javax.swing.*;
+import java.awt.*;
 import java.util.HashMap;
 import java.util.Map;
-import static server.Server.userClient;
+
 
 public class friendPanel extends JPanel implements Runnable{
+    int pos_y = 0;
     public static Map<String, JButton> map_friend = new HashMap<String, JButton>();
+    public static  Map<String, Integer> userClient = new HashMap<String, Integer>();
+    public synchronized static Map<String, Integer> getUserClient() {
+        return userClient;
+    }
+    public synchronized static void setUserClient(String str,Integer s) {
+        if (!userClient.containsKey(str))  userClient.put(str,1);
+        else userClient.replace(str,null);
+        System.out.println(str + "  " + userClient.size());
+    }
+
     @Override
     public void run() {
         while (true) {
             repaint();
             for (Map.Entry str :
-                    userClient.entrySet()) {
+                    getUserClient().entrySet()) {
                 if (str.getValue() != null) {
+                 //   System.out.println(str.getKey() + "-----------");
                     if (!map_friend.containsKey(str.getKey().toString())) {
-                        System.out.println(str.getKey().toString() + "----------*");
                         addFriend(str.getKey().toString());
                     }
                 } else {
@@ -22,25 +36,26 @@ public class friendPanel extends JPanel implements Runnable{
                         reFriend(str.getKey().toString());
                     }
                 }
-                try {
-                    Thread.sleep(100);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
+            }
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
             }
         }
     }
     public void addFriend(String friend){
         JButton jButton = new JButton(friend);
+        jButton.setBounds(10,pos_y,330,30);
+        pos_y += 30;
+        jButton.setFont(new Font("楷体", 1, 14));
+        jButton.setForeground(Color.cyan);
         map_friend.put(friend,jButton);
         this.add(jButton);
     }
     public void reFriend(String friend){
         this.remove(map_friend.get(friend));
+        pos_y -=30;
         map_friend.remove(friend);
-    }
-
-    public static void main(String[] args) {
-        System.out.println(userClient.size());
     }
 }

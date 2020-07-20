@@ -9,7 +9,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
 
-public class mainLogin {
+public class mainLogin2 {
     private static ImageIcon back = new ImageIcon("src/imgs/back.jpg");
     public static void main(String[] args) {
         main_Login main_login = new main_Login();
@@ -24,7 +24,7 @@ public class mainLogin {
         main_login.add(dawn_login);
 
         main_login.setUndecorated(true);
-   //     main_login.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        //     main_login.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         main_login.setVisible(true);
 
     }
@@ -32,9 +32,9 @@ public class mainLogin {
         boolean isDraging = false;
         int xx,yy;
         public main_Login() {
-           this.setSize(Constant.L_W,Constant.L_H);
-           this.setLayout(null);
-           //实现无边框拖拽界面
+            this.setSize(Constant.L_W,Constant.L_H);
+            this.setLayout(null);
+            //实现无边框拖拽界面
             //监听最初位置
             this.addMouseListener(new MouseAdapter() {
                 public void mousePressed(MouseEvent e) {
@@ -77,7 +77,7 @@ public class mainLogin {
         private JPanel jPanel1;
         private JPanel jPanel2;
         private JButton Login;
-        private String name = "张三";
+        private String name = "李四";
 
         public dawn_Login(JFrame jFrame) {
             this.setSize(800,400);

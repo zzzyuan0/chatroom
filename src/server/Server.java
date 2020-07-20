@@ -1,8 +1,8 @@
 package server;
 
-import mainFrame.mainChat;
+import file.fileSever;
+import mainFrame.friendPanel;
 
-import javax.swing.*;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -21,6 +21,7 @@ public class Server {
     public static Map<String, Channel> userClient = new HashMap<String, Channel>();
     public Server() {
         try {
+            new Thread(new fileSever()).start();
             serverSocket = new ServerSocket(8888);
         } catch (IOException e) {
             e.printStackTrace();
@@ -43,6 +44,7 @@ public class Server {
         DataInputStream dis;
         DataOutputStream dos;
         boolean isRun = true;
+
         public Channel(Socket client) {
             this.client = client;
             try {
@@ -53,7 +55,6 @@ public class Server {
                 e.printStackTrace();
             }
         }
-
         @Override
         public void run() {
             String msg;
@@ -71,7 +72,6 @@ public class Server {
             } catch (IOException e) {
                 System.out.println("退出连接");
                 relase();
-                e.printStackTrace();
             }
             return msg;
         }
@@ -84,12 +84,10 @@ public class Server {
                       userClient.replace(str,this);
                   }else {
                       userClient.put(str,this);
-                      System.out.println(userClient.size());
                   }
+                  friendPanel.setUserClient(str,1);
               }else{
-                  if (c != this){
                       c.send(msg);
-                  }
               }
             }
         }
@@ -108,8 +106,9 @@ public class Server {
                 for (Map.Entry<String,Channel> l:
                     userClient.entrySet() ) {
                     if (l.getValue() == this){
-                        System.out.println(l.getKey() + "yichu   + ");
+                        System.out.println(l.getKey() + "退出群聊");
                            userClient.replace(l.getKey(),null);
+                           friendPanel.setUserClient(l.getKey(),0);
                     }
                 }
                 dos.close();
@@ -120,7 +119,6 @@ public class Server {
         }
 
     }
-
     public static void main(String[] args) {
         new Server();
     }

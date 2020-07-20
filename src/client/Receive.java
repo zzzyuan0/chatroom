@@ -27,7 +27,12 @@ public class Receive implements Runnable{
       while (true){
           String msg = receive();
           if (!msg.equals("")){
-              mainChat.seeChat.append(msg);
+             String name = msg.substring(0,msg.indexOf("+")) + "\n";
+             String str = msg.substring(msg.indexOf("+")+1);
+             String nameStr = name + str;
+              mainChat.seeChat.append(nameStr);
+//              mainChat.seeChat.append(  str);
+
           }
       }
     }
