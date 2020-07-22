@@ -20,15 +20,15 @@ public class Server {
     public static Map<String, Channel> userClient = new HashMap<String, Channel>();
     public Server() {
         try {
-            new Thread(new fileSever()).start();
+            new Thread(new fileSever()).start();  //开启文件服务器
             serverSocket = new ServerSocket(8888);
         } catch (IOException e) {
             e.printStackTrace();
         }
         while (true){
             try {
-                client = serverSocket.accept();
-                channel = new Channel(client);
+                client = serverSocket.accept();  //接受客户端连接
+                channel = new Channel(client);  //该客户端创建一个线程Channel，时刻监听信息的接收
                 new Thread(channel).start();
                 System.out.println("1111---------链接成功--------");
                 clients.add(channel);
@@ -38,6 +38,9 @@ public class Server {
         }
     }
 
+    /**
+     * 负责信息的接收与发送，每一个客户端都有自己独立的线程
+     */
     class Channel implements Runnable {
         Socket client;
         DataInputStream dis;
@@ -59,12 +62,13 @@ public class Server {
         public void run() {
             String msg;
             while (isRun){
-                     msg= receive();
-                     if (!msg.equals("")){
-                         sendfirend(msg);
-                     }
-                 }
+                msg= receive();
+                if (!msg.equals("")){
+                    sendfirend(msg);
+                }
+            }
         }
+        //信息的接收
         private String receive(){
             String msg = "";
             try {
@@ -75,6 +79,7 @@ public class Server {
             }
             return msg;
         }
+        // 遍历clients里面已经连接的客户端，并且判断信息是否以@开头(相当于上线)，如果不是则直接调用send发送信息
         private void sendfirend(String msg){
             for (Channel c:
                 clients ) {
@@ -90,6 +95,7 @@ public class Server {
               }
             }
         }
+        //信息发送
         private synchronized void send(String msg){
             try {
                 dos.writeUTF(msg);
@@ -99,6 +105,7 @@ public class Server {
                 e.printStackTrace();
             }
         }
+        //释放流，移除相对应的客户端
         private void relase(){
             isRun = false;
             try {
@@ -115,6 +122,7 @@ public class Server {
                 e.printStackTrace();
             }
         }
+        //时刻监听那些客户端上线和离线
         class reFriend implements Runnable{
             @Override
             public void run() {

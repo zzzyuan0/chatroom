@@ -108,7 +108,7 @@ public class mainChat extends JFrame {
                     int reval = jfc.showOpenDialog(new JFrame());
                     if (reval == JFileChooser.APPROVE_OPTION) {
                         String path = jfc.getSelectedFile().toString();
-                        System.out.println(path);
+                     //   System.out.println(path);
                         try {
                             fileClient = new Socket("localhost",1314);
                             new file.sendFile(path,fileClient);

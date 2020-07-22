@@ -33,7 +33,7 @@ public class fileSever implements Runnable {
                  System.out.println("连接成功");
                  dis = new DataInputStream(socket.getInputStream());
                  filePath = dis.readUTF();
-                 file = new File("D:\\upload\\");
+                 file = new File("D:\\upload");
                  System.out.println(file);
                   if (!file.exists()){
                      file.mkdir();
